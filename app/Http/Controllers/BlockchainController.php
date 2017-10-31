@@ -80,6 +80,7 @@ class BlockchainController extends Controller
 
     public function blockchain()
     {
+        dd(5);
         $tx = new TX();
 
         // Tx inputs

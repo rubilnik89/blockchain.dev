@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/blockchain', 'MusicController@blockchain')->name('blockchain');
-Route::get('/get_address', 'MusicController@get_address')->name('get_address');
-Route::get('/fill_addresses', 'MusicController@fill_addresses')->name('fill_addresses');
-Route::get('/webhook', 'MusicController@webhook')->name('webhook');
+Route::get('/blockchain', 'BlockchainController@blockchain')->name('blockchain');
+Route::get('/get_address', 'BlockchainController@get_address')->name('get_address');
+Route::get('/fill_addresses', 'BlockchainController@fill_addresses')->name('fill_addresses');
+Route::get('/webhook', 'BlockchainController@webhook')->name('webhook');
