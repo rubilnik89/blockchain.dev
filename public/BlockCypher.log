@@ -1,0 +1,17 @@
+[01-11-2017 07:16:55] BlockCypher\Core\BlockCypherHttpConnection: INFO	: POST https://api.blockcypher.com/v1/btc/main/hooks?token=ebfdb4bac29747d9b1649fd9526d7ebd
+[01-11-2017 07:16:56] BlockCypher\Core\BlockCypherHttpConnection: DEBUG	: Request Headers 	: POST /v1/btc/main/hooks?token=ebfdb4bac29747d9b1649fd9526d7ebd HTTP/1.1, Host: api.blockcypher.com, Accept: */*, Content-Type: application/json, User-Agent: BlockCypherSDK/BlockCypher-PHP-SDK 1.5.0 (lang=PHP;v=7.1.0;bit=64;os=Windows_NT_10.0;machine=AMD64;openssl=1.0.2j;curl=7.51.0), BlockCypher-Request-Id: 21307064337436150952061213604, Content-Length: 79, , 
+[01-11-2017 07:16:56] BlockCypher\Core\BlockCypherHttpConnection: DEBUG	: Request Data		: {"url":"https://requestb.in/15f7u0k1?uniqid=59f974e743eb3","event":"new-block"}
+--------------------------------------------------------------------------------------------------------------------------------
+
+[01-11-2017 07:16:56] BlockCypher\Core\BlockCypherHttpConnection: INFO	: Response Status 	: 201
+[01-11-2017 07:16:56] BlockCypher\Core\BlockCypherHttpConnection: DEBUG	: Response Headers	: HTTP/1.1 201 Created, Server: nginx/1.13.6, Date: Wed, 01 Nov 2017 07:16:57 GMT, Content-Type: application/json, Content-Length: 207, Connection: keep-alive, Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Methods: GET, POST, PUT, DELETE, Access-Control-Allow-Origin: *, X-Ratelimit-Remaining: 199, , 
+[01-11-2017 07:16:56] BlockCypher\Core\BlockCypherHttpConnection: DEBUG	: Response Data 	: {
+  "id": "7ba658ba-9d91-45d8-98f7-b32e2faa37b9",
+  "token": "ebfdb4bac29747d9b1649fd9526d7ebd",
+  "url": "https://requestb.in/15f7u0k1?uniqid=59f974e743eb3",
+  "callback_errors": 0,
+  "event": "new-block"
+}
+
+================================================================================================================================
+
