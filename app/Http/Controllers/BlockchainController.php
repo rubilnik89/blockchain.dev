@@ -15,7 +15,7 @@ use BlockCypher\Rest\ApiContext;
 
 class BlockchainController extends Controller
 {
-    public $token = '3c85a32ecd0d432a8e315b4438629b4a';
+    public $token = 'ebfdb4bac29747d9b1649fd9526d7ebd';
     public $arr_tokens = [
         'df27a82220344ebf976fb80a6f8ac59c',
         '72b4252b707140248508f723ccab4c9d',
@@ -155,14 +155,17 @@ class BlockchainController extends Controller
         dd('deleted');
     }
 
-    public function webhook()
+    public function get_tx($tx_id)
     {
         $txClient = new TXClient($this->get_api_context('main', 'btc', $this->token));
-        $transaction = $txClient->get('f6f71371b4658ad1a76868e2e61064fd63513a19d3a0e95ba7402d8c120c2dfc');
+        $transaction = $txClient->get($tx_id);
         dd($transaction);
-//        $this->get_all_webhooks();
+    }
+
+    public function webhook()
+    {
         $webHook = new WebHook();
-        $webHook->setUrl("https://requestb.in/tajk8mta?uniqid=" . uniqid());
+        $webHook->setUrl("http://104.154.230.110/handle_webhook/btc");
         $webHook->setEvent('new-block');
 
         $webHookClient = new \BlockCypher\Client\WebHookClient($this->get_api_context('main', 'btc', $this->token));
