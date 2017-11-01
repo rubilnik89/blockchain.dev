@@ -11,11 +11,14 @@ use Illuminate\Http\Request;
 
 use BlockCypher\Auth\SimpleTokenCredential;
 use BlockCypher\Rest\ApiContext;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class BlockchainController extends Controller
 {
     public $token = 'ebfdb4bac29747d9b1649fd9526d7ebd';
+    private $index = 0;
     public $arr_tokens = [
         'df27a82220344ebf976fb80a6f8ac59c',
         '72b4252b707140248508f723ccab4c9d',
@@ -132,13 +135,15 @@ class BlockchainController extends Controller
         return $addressKeyChain;
     }
 
-    private function get_api_context($chain = 'main', $coin = 'btc', $token)
+    private function get_api_context($chain = 'main', $coin = 'btc')
     {
-        return $apiContext = ApiContext::create(
+        $apiContext = ApiContext::create(
             $chain, $coin, 'v1',
-            new SimpleTokenCredential($token),
+            new SimpleTokenCredential($this->arr_tokens[$this->index]),
             array('log.LogEnabled' => true, 'log.FileName' => 'BlockCypher.log', 'log.LogLevel' => 'DEBUG')
         );
+
+        return $apiContext;
     }
 
     public function get_all_webhooks()
@@ -157,13 +162,16 @@ class BlockchainController extends Controller
 
     public function get_tx($tx_id)
     {
-        $txClient = new TXClient($this->get_api_context('main', 'btc', $this->token));
+        $txClient = new TXClient($this->get_api_context('main', 'btc'));
+//        $txClient = new TXClient($this->get_api_context('main', 'btc', $this->token));
         $transaction = $txClient->get($tx_id);
-        dd($transaction);
+//        dd($transaction->getOutputs()[0]);
+        return $transaction;
     }
 
     public function webhook()
     {
+//        $this->get_tx('5f3f38fddfb7b88f58687bdb0f2cbec12da6c79fbb887affff34eb365c256fb6');
         $webHook = new WebHook();
         $webHook->setUrl("http://104.154.230.110/handle_webhook/btc");
         $webHook->setEvent('new-block');
@@ -171,5 +179,37 @@ class BlockchainController extends Controller
         $webHookClient = new \BlockCypher\Client\WebHookClient($this->get_api_context('main', 'btc', $this->token));
         $webHookClient->create($webHook);
     }
+
+    public function handle_webhook_btc(Request $request)
+    {
+        $tx_addresses = [];
+        foreach ($request['txids'] as $index => $tx_id)
+        {
+            $this->index = $index;
+            if($index > 49) $this->index = ($index - 49);
+            if($index > 98) $this->index = ($index - 98);
+
+            $tx = $this->get_tx($tx_id);
+            foreach ($tx->getOutputs() as $output)
+            {
+                if($output->getAddresses() != '')
+                {
+                    $tx_addresses[$output->getAddresses()[0]] = $output->getValue();
+                }
+            }
+        }
+
+        $addresses_existed = Address::where('currency', 'btc')->whereIn('address', array_keys($tx_addresses))->get();
+
+        foreach ($addresses_existed as $address)
+        {
+            $address->update([
+                'total' => DB::raw('total + ' . $tx_addresses[$address->address])
+            ]);
+        }
+
+        Log::info($request);
+    }
+
 
 }

@@ -13,5 +13,6 @@ class Address extends Model
         'wif',
         'currency',
         'chain',
+        'total',
     ];
 }

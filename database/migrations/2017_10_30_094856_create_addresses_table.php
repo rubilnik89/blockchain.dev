@@ -21,6 +21,7 @@ class CreateAddressesTable extends Migration
             $table->string('wif');
             $table->string('currency');
             $table->string('chain');
+            $table->integer('total')->default(0);
             $table->timestamps();
         });
     }
